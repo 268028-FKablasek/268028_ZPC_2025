@@ -1,0 +1,25 @@
+baseURL = "http://example.org/"
+languageCode = "cs"
+title = "ZPC 2025 Kablásek"
+theme = "ananke"
+
+[menu]
+
+  [[menu.main]]
+    name = "Úvod"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "O mně"
+    url = "/o-mne/"
+    weight = 2
+
+  [[menu.main]]
+    name = "Projekty"
+    url = "/projekty/"
+    weight = 3
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

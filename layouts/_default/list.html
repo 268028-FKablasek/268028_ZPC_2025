@@ -1,0 +1,53 @@
+{{ define "main" }}
+<main class="pa3 pa4-ns nested-copy-line-height nested-img">
+
+  {{ $projectPages := where .Pages "Kind" "page" }}
+  {{ $main := where $projectPages "Params.featured" true }}
+  {{ $others := slice }}
+
+  {{ range $projectPages }}
+    {{ if not .Params.featured }}
+      {{ $w := default 999 (int .Params.weight) }}
+      {{ $others = $others | append (dict "Page" . "Weight" $w) }}
+    {{ end }}
+  {{ end }}
+
+  {{ $others = sort $others "Weight" "asc" }}
+  {{ $others = first 5 $others }}
+
+  {{/* Featured project card */}}
+  {{ range $main }}
+    <div class="mb5 center mw6">
+      <a href="{{ .RelPermalink }}" class="no-underline db">
+        <article class="pa4 ba bw2 b--black-50 br4 flex flex-column justify-start hover-shadow" style="color:black;">
+          <h1 class="f2 lh-title mb2 tc">{{ .Title }}</h1>
+
+          {{ with .Params.subtitle }}
+            <p class="f2 lh-copy measure mt2 tc">{{ . }}</p> {{/* match title size */}}
+          {{ end }}
+
+        </article>
+      </a>
+    </div>
+  {{ end }}
+
+  {{/* Other projects cards */}}
+  <section class="flex flex-wrap mt4">
+    {{ range $others }}
+      <div class="w-20-l w-50-m w-100 ph3 mb4">
+        <a href="{{ .Page.RelPermalink }}" class="no-underline db">
+          <article class="h-100 ba bw2 b--black-20 pa3 br4 flex flex-column justify-start hover-shadow" style="color:black;">
+            <h2 class="f4 mb1 tc">{{ .Page.Title }}</h2> {{/* smaller title */}}
+
+            {{ with .Page.Params.subtitle }}
+              <p class="f4 lh-copy measure mt1 tc">{{ . }}</p> {{/* smaller subtitle */}}
+            {{ end }}
+
+          </article>
+        </a>
+      </div>
+    {{ end }}
+  </section>
+
+</main>
+{{ end }}
