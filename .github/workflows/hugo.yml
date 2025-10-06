@@ -1,38 +1,38 @@
-name: Deploy Hugo site to Pages
+name: Build and Deploy Hugo Site
 
 on:
   push:
-    branches: ["main"]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
+    branches:
+      - main   # větev, ze které se spouští build
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 0
+    # 1️⃣ Checkout repozitáře s podporou submodulů
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        submodules: true   # aby se stáhl submodul Ananke
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: "0.135.0"
+    # 2️⃣ Setup Hugo
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v3
+      with:
+        hugo-version: '0.115.0'   # nebo nejnovější dostupná verze
 
-      - name: Build
-        run: hugo --minify
+    # 3️⃣ Build stránky
+    - name: Build
+      run: hugo --minify
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+    # 4️⃣ Deploy na GitHub Pages
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        # volitelné nastavení:
+        # user_name: "github-actions"
+        # user_email: "github-actions@github.com"
+        # force_orphan: true
