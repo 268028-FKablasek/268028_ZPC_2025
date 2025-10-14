@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "C:/Hugo/ZPC2025-Kablasek",
+	"sourceRoot": "c:/Hugo/ZPC2025-Kablasek",
 	"sources": [
 		"ananke/css/main.css"
 	],
